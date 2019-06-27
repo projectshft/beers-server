@@ -96,16 +96,18 @@ app.post('/beers/:id/reviews', function(req, res, next) {
 
     var review = new ReviewModel(req.body);
 
-    ReviewModel.update(
-      { _id: review._id },
-      { $push: { reviews: review }}
-    );
 
-    beer.save(function (err, beer) {
-      if (err) { return next(err); }
-
-      res.json(review);
-    });
+    BeerModel.update(
+      { _id: beer._id },
+      { $push: { reviews: review}},
+      function () {
+        beer.save(function (err, beer) {
+          if (err) { return next(err); }
+    
+          res.json(review);
+        });   
+      }
+    )
   });
 });
 
