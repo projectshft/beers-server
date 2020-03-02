@@ -1,9 +1,8 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var beers = require('./beerRouter')
-
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/beers');
+var beers = require('./routes/beers')
+var index = require('./routes/index')
 
 var app = express();
 
@@ -21,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 
+app.use('/', index);
 app.use('/beers', beers);
 
 var port = process.env.PORT || 4000;
